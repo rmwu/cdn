@@ -2,6 +2,9 @@
 
 Official implementation of causal differential networks (ICML 2025).
 
+**NOTE** This repository is currently under construction.
+Links will be updated as files are cleaned and prepared.
+
 ## Overview
 
 Our goal is to identify the root causes that drive differences between
