@@ -64,10 +64,12 @@ We provide pretrained weights for 3 versions of CDN:
 
 ## Datasets
 
-You may download our datasets [here]().
-Sample data split files are specified in `data`.
-- Synthetic testing datasets
-- Perturb-seq finetuning and testing datasets
+You may download our datasets [here](https://figshare.com/articles/dataset/Single_cell_evaluation_datasets/29215766?file=55059587).
+The unzipped folder should be placed under `data`, which will be referenced by splits files:
+- `data/test_240.csv` Synthetic testing datasets
+- `data/perturbseq.csv` Perturb-seq finetuning and testing datasets for *seen* cell line
+- `data/perturbseq_{cell_line}.csv` Perturb-seq finetuning and testing datasets for *unseen* cell line splits
+- `data/sciplex.csv` Sci-Plex testing datasets (*unseen* cell line and intervention type)
 
 These splits CSVs are formatted as follows.
 - `perturbation` is a string that denotes the identifier of the perturbation target
