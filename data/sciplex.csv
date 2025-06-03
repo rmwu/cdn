@@ -1,0 +1,7 @@
+name,pert,fp_data,label,split
+Infigratinib,ENSG00000077782,data/single_cell/A172/data_interv-Infigratinib.npy,133,test
+Nintedanib,ENSG00000077782,data/single_cell/A172/data_interv-Nintedanib.npy,289,test
+Palbociclib,ENSG00000105810,data/single_cell/A172/data_interv-Palbociclib.npy,174,test
+Doxorubicin,ENSG00000131747,data/single_cell/T98G/data_interv-Doxorubicin.npy,16,test
+Palbociclib,ENSG00000105810,data/single_cell/T98G/data_interv-Palbociclib.npy,146,test
+Volasertib,ENSG00000145632,data/single_cell/T98G/data_interv-Volasertib.npy,138,test
