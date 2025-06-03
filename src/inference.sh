@@ -3,25 +3,43 @@
 ######### inference params
 CUDA=0
 
-######### data params
-
-# NOTE: name of YAML file and run save folder
-# see ./config for more options
-#TAG="target_axial"
-#TAG="target_mlp"
-TAG="target_axial_sc"
+TAG="target_axial"  # or "target_axial_sc"
 CONFIG="config/${TAG}.yaml"
 
-# invcov
-#PATH_FCI="checkpoints/fci_synthetic/model_best_epoch=373_auprc=0.842.ckpt"
-# corr
-PATH_FCI="checkpoints/fci_corr/model_best_epoch=331_auprc=0.531_val_loss=0.000.ckpt"
+######### data presets
+# dataset must match $TAG
 
+# synthetic (TAG="target_axial")
+DATA_SYNTHETIC="data/test_240.csv"
+
+# Perturb-seq (TAG="target_axial_sc")
+DATA_PERTURBSEQ="data/perturbseq.csv"
+DATA_PERTURBSEQ_K562="data/perturbseq_k562.csv"
+DATA_PERTURBSEQ_RPE1="data/perturbseq_rpe1.csv"
+DATA_PERTURBSEQ_HepG2="data/perturbseq_hepg2.csv"
+DATA_PERTURBSEQ_Jurkat="data/perturbseq_jurkat.csv"
+
+# Sci-Plex (TAG="target_axial_sc")
+DATA_SCIPLEX="data/sciplex.csv"
+
+######### model presets
+# download from:
+# https://figshare.com/articles/software/CDN_checkpoints/29225855
+
+# synthetic
+PATH_SYNTHETIC="checkpoints/cdn_synthetic-all.ckpt"
+# used for synthetic or Sci-Plex results
+PATH_SYNTHETIC_DIFF="checkpoints/cdn_synthetic_diff-all.ckpt"
+
+# Perturb-seq (TAG="target_axial_sc")
+PATH_PerturbSeq="checkpoints/cdn_finetuned-seen.ckpt"
+PATH_K562="checkpoints/cdn_finetuned-unseen-no_k562.ckpt"
+PATH_RPE1="checkpoints/cdn_finetuned-unseen-no_rpe1.ckpt"
+PATH_HepG2="checkpoints/cdn_finetuned-unseen-no_hepg2.ckpt"
+PATH_Jurkat="checkpoints/cdn_finetuned-unseen-no_jurkat.ckpt"
 
 echo $NAME
 
-# set the appropriate --checkpoint_path variable
-# that MATCHES with $TAG
 python src/inference.py \
     --config_file $CONFIG \
     --run_name $TAG \

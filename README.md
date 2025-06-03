@@ -26,9 +26,9 @@ networks
 conda create -y --name cdn pip python=3.10
 conda activate cdn
 
+pip install tqdm rich pyyaml numpy==1.26.4 pandas matplotlib seaborn
 pip install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 --index-url https://download.pytorch.org/whl/cu118
-pip install tqdm rich pyyaml numpy=1.26.4 pandas matplotlib seaborn
-pip install pytorch-lightning==2.4.0 torchmetrics==1.4.1 causal-learn==0.1.3.8 wandb
+pip install wandb pytorch-lightning==2.4.0 torchmetrics==1.4.1 causal-learn==0.1.3.8
 ```
 
 CDN was tested using Python 3.10 with PyTorch 2.4.1.
@@ -56,11 +56,28 @@ We recommend at least 10-20 data workers per GPU and a batch size of at least
 
 ## Models
 
-You may download our checkpoints [here]().
-We provide pretrained weights for 3 versions of CDN:
+You may download our checkpoints
+[here](https://figshare.com/articles/software/CDN_checkpoints/29225855).
+The unzipped folder should be placed in the root directory of this repository.
+We provide pretrained weights for all versions of CDN used in our paper.
 - Synthetic (all mechanisms)
-- Synthetic (exclude scale, for reproducibility)
+  - `cdn_synthetic-all.ckpt` "concatenate" version
+    **recommended for benchmarking on synthetic datasets**
+  - `cdn_synthetic_diff-all.ckpt` "difference" version
+    **recommended for benchmarking on chemical perturbation datasets**
+- Synthetic (ablations)
+  - `cdn_synthetic_noG-no_scale.ckpt` remove "scale" interventions, remove graph loss
+  - `cdn_synthetic-no_scale.ckpt` remove "scale" interventions
+  - `cdn_synthetic-no_shift.ckpt` remove "shift" interventions
 - Perturb-seq finetuned
+  - `cdn_finetuned-seen.ckpt`  trained on all cell lines
+    **recommended for benchmarking on genetic perturbation datasets**
+  - `cdn_finetuned-unseen-no_hepg2.ckpt` hold out HepG2
+  - `cdn_finetuned-unseen-no_jurkat.ckpt` hold out Jurkat
+  - `cdn_finetuned-unseen-no_k562.ckpt` hold out K562
+  - `cdn_finetuned-unseen-no_rpe1.ckpt` hold out RPE1
+- Base SEA weights for training CDN
+  - `sea_fci_corr.ckpt`
 
 ## Datasets
 
@@ -71,17 +88,25 @@ The unzipped folder should be placed under `data`, which will be referenced by s
 - `data/perturbseq_{cell_line}.csv` Perturb-seq finetuning and testing datasets for *unseen* cell line splits
 - `data/sciplex.csv` Sci-Plex testing datasets (*unseen* cell line and intervention type)
 
-These splits CSVs are formatted as follows.
-- `perturbation` is a string that denotes the identifier of the perturbation target
-- `name` is a string that denotes the raw perturbation target (e.g. gene name)
-- `cluster` (where applicable) is an integer that denotes the k-means cluster of the log-fold
-  change in gene expression, used for data splitting purposes
-- `split` is a string (either train, val or test)
-- `fp_data` is a string that describes the path to the *interventional* dataset.
+For synthetic datasets, the splits CSVs are formatted as follows.
+- `fp_data` path to the *interventional* dataset.
   The corresponding *observational* dataset can be found by replacing
   `data_interv` by `data` (done dynamically in our codebase).
-- `label` is an integer that represents the index of the true target within the
-  data.
+- `fp_graph` path to the ground truth synthetic
+  graph, which is stored as a numpy array
+- `fp_regime` path to the CSV of ground truth interventions (labels)
+- `split` is train, val or test
+
+For biological datasets, the splits CSVs are formatted as follows.
+- `perturbation` or `pert` string that denotes the ENSG identifier of the perturbation target
+- `name` string that denotes the raw perturbation target (e.g. gene name)
+- `cluster` (where applicable) integer that denotes the k-means cluster of the log-fold
+  change in gene expression, used for data splitting purposes
+- `split` is train, val or test
+- `fp_data` path to the *interventional* dataset.
+  The corresponding *observational* dataset can be found by replacing
+  `data_interv` by `data` (done dynamically in our codebase).
+- `label` index of the true target within the data.
 
 ## Results
 
